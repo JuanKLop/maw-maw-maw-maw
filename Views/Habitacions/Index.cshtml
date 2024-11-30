@@ -6,7 +6,7 @@
 }
 <div class="container">
     <div class="d-flex justify-content-end mb-4">
-        <a asp-action="Create" class="btn btn-create">
+        <a id="btn-validar-disponibilidad" class="btn btn-create">
             <i class="fas fa-plus"></i> Crear
         </a>
     </div>
@@ -106,6 +106,18 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalAlerta" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Atención</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" id="mensajeModal"></div>
+        </div>
+    </div>
+</div>
 <script>
     function loadDetails(id) {
         $.get('/Habitacions/Details/' + id, function (data) {
@@ -120,7 +132,7 @@
 </script>
 <script>
     function loadDelete(id) {
-        // Asegúrate de que id tiene el valor esperado.
+        // Asegúrate de que `id` tiene el valor esperado.
         console.log("Cargando el modal para eliminar el ID:", id);
 
         $.get('/Habitacions/Delete/' + id, function (data) {
@@ -130,6 +142,33 @@
             $('#deleteModalBody').html('<div class="text-danger">Error al cargar la información de la habitación.</div>');
         });
     }
+</script>
+
+<script>
+    document.getElementById('btn-validar-disponibilidad').addEventListener('click', function (e) {
+        e.preventDefault();
+        fetch('/Habitacions/ValidarDisponibilidad')
+            .then(response => {
+                console.log(response); // <-- Verifica si la respuesta llega
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // <-- Verifica el contenido del JSON
+                if (!data.existenMuebles && !data.existenTiposdeHabitacions) {
+                    document.getElementById('mensajeModal').textContent = 'No existen muebles ni tipos de habitación.';
+                    $('#modalAlerta').modal('show');
+                } else if (!data.existenMuebles) {
+                    document.getElementById('mensajeModal').textContent = 'No existen muebles registrados.';
+                    $('#modalAlerta').modal('show');
+                } else if (!data.existenTiposdeHabitacions) {
+                    document.getElementById('mensajeModal').textContent = 'No existen tipos de habitación registrados.';
+                    $('#modalAlerta').modal('show');
+                } else {
+                    window.location.href = '/Habitacions/Create';
+                }
+            })
+            .catch(error => console.error('Error en la solicitud:', error));
+    });
 </script>
 <script>
     function submitDeleteForm(form) {
@@ -204,6 +243,9 @@
         color: #1a4a5a;
     }
 
+    #modalAlerta {
+        --bs-modal-margin: 0; /* Ajusta solo para este modal */
+    }
     .container {
         max-width: 1300px;
         background-color: #ffffff;

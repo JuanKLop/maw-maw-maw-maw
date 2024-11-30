@@ -1,4 +1,5 @@
 ﻿<div>
+    <p>ID del mueble: @Model.Idmueble</p>
     <p class="text-center">¿Estás seguro de que deseas eliminar el mueble <strong>@Model.NombreMueble</strong>?</p>
     @if (ViewData["ImageDataURL"] != null)
     {
@@ -6,7 +7,7 @@
             <img src="@ViewData["ImageDataURL"]" alt="Imagen del mueble" class="img-fluid mb-3" />
         </div>
     }
-    <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.Idmueble">
+    <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.Idmueble" onsubmit="return submitDeleteForm(this);">
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-danger me-2">Eliminar</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

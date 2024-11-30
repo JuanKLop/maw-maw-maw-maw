@@ -10,7 +10,7 @@
 <div class="container">
     <div class="d-flex justify-content-end mb-4">
         <a asp-action="Create" class="btn btn-create">
-            <i class="fas fa-plus"></i> Crear Nuevo tipo de Habitacion
+            <i class="fas fa-plus"></i> Crear
         </a>
     </div>
 
@@ -40,9 +40,9 @@
                         <button onclick="loadDetails(@item.IdtipodeHabitacion)" class="btn btn-info btn-sm">
                             <i class="fa-solid fa-eye"></i>
                         </button>
-                        <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="loadDelete(@item.IdtipodeHabitacion)">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="loadDelete(@item.IdtipodeHabitacion)">
                             <i class="fas fa-trash"></i>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             }
@@ -67,7 +67,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Eliminar Tipo de habitacion</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Tipo de Habitacion</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="deleteModalBody">
@@ -90,12 +90,33 @@
 </script>
 <script>
     function loadDelete(id) {
+        console.log("Cargando servicio con ID:", id); // Verifica el ID que pasa al controlador.
         $.get('/TipodeHabitacions/Delete/' + id, function (data) {
             $('#deleteModalBody').html(data); // Inserta el contenido parcial
             $('#deleteModal').modal('show'); // Muestra el modal
         }).fail(function () {
             $('#deleteModalBody').html('<div class="text-danger">Error al cargar la información del tipo de habitacion.</div>');
         });
+    }
+</script>
+<script>
+    function submitDeleteForm(form) {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario.
+
+        $.post($(form).attr('action'), $(form).serialize())
+            .done(function (response) {
+                if (response.success) {
+                    $('#deleteModal').modal('hide'); // Cerrar el modal.
+                    location.reload(); // Recargar la página (o actualiza dinámicamente la tabla si prefieres).
+                } else {
+                    alert(response.message); // Mostrar mensaje de error.
+                }
+            })
+            .fail(function (xhr, status, error) {
+                console.error("Error:", error); // Ver detalles en consola.
+                console.error("Detalles:", xhr.responseText); // Muestra respuesta completa.
+                alert("Ocurrió un error inesperado al intentar eliminar el tipo de habitacion.");
+            });
     }
 </script>
 <script>

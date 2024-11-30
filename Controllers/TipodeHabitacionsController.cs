@@ -24,6 +24,7 @@ namespace Glamping_Addventure2.Controllers
             return View(await _context.TipodeHabitacions.ToListAsync());
         }
 
+
         // GET: TipodeHabitacions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -114,7 +115,7 @@ namespace Glamping_Addventure2.Controllers
             }
             return View(tipodeHabitacion);
         }
-
+        [HttpGet]
         // GET: TipodeHabitacions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -123,42 +124,43 @@ namespace Glamping_Addventure2.Controllers
                 return NotFound();
             }
 
-            var tipodeHabitacion = await _context.TipodeHabitacions
-                .Include(t => t.Habitacions) // Incluimos las habitaciones asociadas
+            var tipohabitacion = await _context.TipodeHabitacions
+                .Include(t => t.Habitacions)
                 .FirstOrDefaultAsync(m => m.IdtipodeHabitacion == id);
-            if (tipodeHabitacion == null)
+            if (tipohabitacion == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeletePartial", tipodeHabitacion);
+            return PartialView("_DeletePartial", tipohabitacion);
         }
 
         // POST: TipodeHabitacions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tipoDeHabitacion = await _context.TipodeHabitacions
-                .Include(t => t.Habitacions)
-                .FirstOrDefaultAsync(m => m.IdtipodeHabitacion == id);
+            Console.WriteLine($"ID recibido: {id}"); // Agregar un log para depuración.
 
-            if (tipoDeHabitacion == null)
+            var tipohabitacion = await _context.TipodeHabitacions
+                .FirstOrDefaultAsync(h => h.IdtipodeHabitacion == id);
+
+            if (tipohabitacion == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "El tipo de habitacion no fue encontrado." });
             }
 
-            // Verifica si hay habitaciones asociadas antes de eliminar
-            if (tipoDeHabitacion.Habitacions.Any())
+            try
             {
-                TempData["ErrorMessage"] = "No se puede eliminar este tipo de habitación porque está asociado con una o más habitaciones.";
-                return RedirectToAction(nameof(Index));
+                _context.TipodeHabitacions.Remove(tipohabitacion);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true });
             }
-
-            _context.TipodeHabitacions.Remove(tipoDeHabitacion);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar: " + ex.Message });
+            }
         }
 
         private bool TipodeHabitacionExists(int id)

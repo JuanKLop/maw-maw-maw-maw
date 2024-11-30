@@ -1,6 +1,5 @@
 ﻿@model Glamping_Addventure2.Models.Paquete
 
-
 <div>
     <dl class="row">
         <dt class="text-center">
@@ -16,7 +15,9 @@
         <dd class="text-center">
             @if (Model.ImagenPaquete != null && Model.ImagenPaquete.Length > 0)
             {
+
                 var base64Image = Convert.ToBase64String(Model.ImagenPaquete);
+
                 var imageSrc = $"data:image/png;base64,{base64Image}";
                 <img src="@imageSrc" alt="Imagen de @Model.NombrePaquete" style="width:250px;height:auto;" />
             }
@@ -25,47 +26,13 @@
                 <span>No hay imagen</span>
             }
         </dd>
-
-        <dt class="text-center">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class="text-center">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-
-        <dt class="text-center">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class="text-center">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-
-        <dt class="text-center">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class="text-center">
-            @Html.Raw(Model.Estado ? "Activo" : "Inactivo")
-        </dd>
-
-        <dt class="text-center">
-            @Html.DisplayNameFor(model => model.IdhabitacionNavigation)
-        </dt>
-        <dd class="text-center">
-            @Html.DisplayFor(model => model.IdhabitacionNavigation.NombreHabitacion)
-        </dd>
-
-        <dt class="text-center">
-            @Html.DisplayNameFor(model => model.IdservicioNavigation)
-        </dt>
-        <dd class="text-center">
-            @Html.DisplayFor(model => model.IdservicioNavigation.NombreServicio)
-        </dd>
-
     </dl>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Idpaquete" />
-        <input type="submit" value="Eliminar" class="btn btn-danger btn-sm"></> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <div class="text-center mt-4">
+        <form asp-action="Delete" style="display: inline-block;">
+            <input type="hidden" asp-for="Idpaquete" />
+            <input type="submit" value="Eliminar" class="btn btn-danger btn-sm" />
+        </form>
+        <a asp-action="Index" class="btn btn-secondary btn-sm" style="display: inline-block;">Volver atrás</a>
+    </div>
 </div>

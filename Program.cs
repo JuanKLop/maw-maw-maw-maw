@@ -58,8 +58,21 @@ builder.Services.AddControllersWithViews(options =>
         Location = ResponseCacheLocation.None,
     });
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirLocalhost", policy =>
+    {
+        policy.WithOrigins("http://localhost:5187")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
+
+// Antes de app.UseAuthorization();
+app.UseCors("PermitirLocalhost");
+
 
 // Añadir el middleware para gestionar el tiempo de sesión
 app.UseSession(); // Asegúrate de usar la sesión antes de usar el middleware

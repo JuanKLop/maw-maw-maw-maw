@@ -1,7 +1,7 @@
 ﻿@model Glamping_Addventure2.Models.Role
 
 @{
-    ViewData["Title"] = "Editar Rol";
+    ViewData["Title"] = "Editar";
 }
 
 <div class="container mt-4" style="max-width: 1000px;">
@@ -45,12 +45,25 @@
         </div>
 
         <div class="d-flex justify-content-center mt-3 gap-2">
-            <button class="btn btn-primary" type="submit" style="background: #38b2ac; border: none; color: #fff; font-weight: bold;">Editar rol</button>
+            <button class="btn btn-primary" type="submit" style="background: #38b2ac; border: none; color: #fff; font-weight: bold;">Editar</button>
             <a asp-action="Index" class="btn btn-secondary" style="background: #4b5563; border: none; color: #fff; font-weight: bold;">Cancelar</a>
         </div>
     </form>
 </div>
 <style>
+    .form-label {
+        color: #ffffff; /* Cambiar color a blanco para las etiquetas */
+    }
+
+    #permissionSearch {
+        color: #ffffff; /* Cambiar color a blanco para el input de búsqueda */
+    }
+
+    #nombreRol {
+        color: #ffffff; /* Cambiar color a blanco para el input del nombre de rol */
+    }
+
+    /* Otros estilos permanecen igual */
     .modal-lg {
         max-width: 300%; /* Ajuste para un modal más grande */
         height: auto;
@@ -90,12 +103,25 @@
             background-color: #374151; /* Gris más oscuro al pasar el mouse */
         }
 
+    /* Estilos como los que ya has definido */
+    .form-label {
+        color: #ffffff; /* Cambiar color a blanco para las etiquetas */
+    }
+
+    /* Otros estilos permanecen igual */
     .permissions-container {
-        max-height: 400px; /* Mayor altura para mostrar más permisos */
+        max-height: 400px;
         overflow-y: auto;
-        border: 1px solid #4b5563; /* Borde oscuro */
-        background-color: #2d3748; /* Fondo oscuro */
+        border: 1px solid #4b5563;
+        background-color: #2d3748;
         border-radius: 10px;
+    }
+
+    .permission-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px;
     }
 
     .permission-item {
@@ -150,7 +176,6 @@
             transform: translateX(14px);
         }
 
-    /* Estilo de la vista de formulario */
     .container {
         background-color: #1f2937; /* Fondo oscuro */
         color: #e5e7eb; /* Texto claro */
@@ -158,10 +183,6 @@
         border-radius: 10px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         margin-top: 30px;
-    }
-
-    .form-label {
-        color: #e5e7eb; /* Texto de los labels */
     }
 
     .form-control {
@@ -182,8 +203,17 @@
     .permission-nombre {
         color: #e5e7eb;
     }
-</style>
 
+    /* Cambiar color de los placeholders */
+    ::placeholder {
+        color: #ffffff !important; /* Cambiar color a blanco para los placeholders */
+    }
+
+    #permissionSearch::placeholder,
+    #nombreRol::placeholder {
+        color: #ffffff !important; /* Asegurarse de que los placeholders sean blancos */
+    }
+</style>
 
 
 <script>

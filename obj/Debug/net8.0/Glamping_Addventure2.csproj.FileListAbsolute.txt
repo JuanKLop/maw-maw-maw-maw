@@ -2870,3 +2870,4 @@ C:\Users\nasus\Desktop\stunning-octo-meme-main\Glamping_Addventure2\obj\Debug\ne
 C:\Users\nasus\Desktop\stunning-octo-meme-main\Glamping_Addventure2\obj\Debug\net8.0\Glamping_Addventure2.pdb
 C:\Users\nasus\Desktop\stunning-octo-meme-main\Glamping_Addventure2\obj\Debug\net8.0\Glamping_Addventure2.genruntimeconfig.cache
 C:\Users\nasus\Desktop\stunning-octo-meme-main\Glamping_Addventure2\obj\Debug\net8.0\ref\Glamping_Addventure2.dll
+C:\Users\nasus\Desktop\stunning-octo-meme-main\Glamping_Addventure2\obj\Debug\net8.0\Glamping_Addventure2.sourcelink.json

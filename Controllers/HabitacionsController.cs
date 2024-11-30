@@ -18,7 +18,18 @@ namespace Glamping_Addventure2.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public async Task<IActionResult> ValidarDisponibilidad()
+        {
+            bool existenMuebles = await _context.Muebles.AnyAsync();
+            bool existenTiposdeHabitacions = await _context.TipodeHabitacions.AnyAsync();
 
+            return Json(new
+            {
+                existenMuebles,
+                existenTiposdeHabitacions
+            });
+        }
         // GET: Habitacions
         public async Task<IActionResult> Index()
         {

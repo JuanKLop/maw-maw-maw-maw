@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Lista de Usuarios";
 }
-
 <div class="container">
     <div class="d-flex justify-content-end mb-4">
         <a asp-action="Create" class="btn btn-create">
@@ -42,14 +41,36 @@
                         <a asp-action="Edit" asp-controller="Usuarios" asp-route-id="@usuario.Idusuario" class="btn btn-edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a asp-action="Delete" asp-controller="Usuarios" asp-route-id="@usuario.Idusuario" class="btn btn-delete">
+                        <button class="btn btn-delete" onclick="confirmDelete('@usuario.Idusuario', '@usuario.NombreUsuario')">
                             <i class="fas fa-trash"></i>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" asp-action="Delete" method="post">
+                    <input type="hidden" name="id" id="deleteUserId" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Enlaces de DataTables y Bootstrap -->
@@ -66,7 +87,16 @@
             "pageLength": 5,
         });
     });
+
+    function confirmDelete(id, nombreUsuario) {
+        $('#deleteUserId').val(id);
+        $('#deleteMessage').html(¿Estás seguro de que deseas eliminar al usuario < strong > ${ nombreUsuario } < /strong>?);
+            $('#deleteModal').modal('show');
+    }
 </script>
+
+
+
 
 <!-- Estilos compartidos -->
 <style>

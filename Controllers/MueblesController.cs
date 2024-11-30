@@ -144,7 +144,7 @@ namespace Glamping_Addventure2.Controllers
                                           .ToList();
             return View(mueble);
         }
-
+       
         // POST: Muebles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -244,7 +244,7 @@ namespace Glamping_Addventure2.Controllers
             return _context.Muebles.Any(e => e.Idmueble == id);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -268,26 +268,30 @@ namespace Glamping_Addventure2.Controllers
             return PartialView("_DeletePartial", mueble);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mueble = await _context.Muebles.FindAsync(id);
+            Console.WriteLine($"ID recibido: {id}"); // Agregar un log para depuración.
+
+            var mueble = await _context.Muebles
+                .FirstOrDefaultAsync(h => h.Idmueble == id);
+
             if (mueble == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "El mueble no fue encontrado." });
             }
 
             try
             {
                 _context.Muebles.Remove(mueble);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); // Asegúrate de que Index exista y sea la acción correcta
+
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Ocurrió un error al intentar eliminar el mueble: " + ex.Message);
-                return View("Delete", mueble); // Muestra la vista Delete si ocurre un error
+                return Json(new { success = false, message = "Error al eliminar: " + ex.Message });
             }
         }
         [HttpPost]

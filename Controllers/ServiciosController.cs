@@ -114,7 +114,7 @@ namespace Glamping_Addventure2.Controllers
             }
             return View(servicio);
         }
-
+        [HttpGet]
         // GET: Servicios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -134,18 +134,31 @@ namespace Glamping_Addventure2.Controllers
         }
 
         // POST: Servicios/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servicio = await _context.Servicios.FindAsync(id);
-            if (servicio != null)
+            Console.WriteLine($"ID recibido: {id}"); // Agregar un log para depuración.
+
+            var servicio = await _context.Servicios
+                .FirstOrDefaultAsync(h => h.Idservicio == id);
+
+            if (servicio == null)
             {
-                _context.Servicios.Remove(servicio);
+                return Json(new { success = false, message = "El servicio no fue encontrado." });
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Servicios.Remove(servicio);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar: " + ex.Message });
+            }
         }
 
         private bool ServicioExists(int id)
